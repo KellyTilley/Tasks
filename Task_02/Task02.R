@@ -48,7 +48,7 @@ head(berenMilk)
 Feeds <- which(Data[,"event"] == "bottle")
 #Another way to subset the file using column names with $ 
 Feeds <- which(Data$event == "bottle")
-#
+#I tried both and got the same results
 
 dayID <- apply(Data, 1, function(x) paste(x[1:3], collapse="-"))
 dataID <- sapply(dayID, as.Date, format = "%Y-%m-%d", origin = "2019-04-18")
