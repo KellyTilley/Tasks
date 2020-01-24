@@ -68,3 +68,57 @@ beren3 <- beren2[order(beren2$age),]
 
 #save teh file as a CSV that so I can read back into R 
 write.csv(beren3, "beren_new.csv", quote=F, row.names=FALSE)
+
+
+
+# Task 02b
+#Question 1: the first hypothesis was inappropiate becuase his weight was
+#not calculated and the second hypothesis the amount he drinks can be 
+#before a nap making the total milk drank different from the nap time. 
+setwd("C:\\Users\\godfr\\OneDrive\\Desktop\\Evolution\\Tasks\\Task_02")
+beren3 <- read.csv("beren_new.csv", stringsAsFactors = F)
+
+Feeds <- which(beren3$event == "bottle")
+#TO find out how much Beren eats at a sitting 
+avgMilk <- mean(beren3$value[Feeds])
+
+#WHat are the units for this avgMilk? Oz
+#Why did I use the "Value" column? Because it tells teh oz of milk drank.
+#Yes [] is important for extracting specfic data from a vector
+
+#tapply() function takes some data (for us the Value) and 
+#some treatment(for us age in days) and applies some other function to those data 
+avgFeed <- tapply(beren3$value[Feeds], beren3$age[Feeds], mean)
+
+varFeed <- tapply(beren3$value[Feeds], beren3$age[Feeds], var)
+totalFeed <- tapply(beren3$value[Feeds], beren3$age[Feeds], sum)
+numFeeds <- tapply(beren3$value[Feeds], beren3$age[Feeds], length)
+
+#The cor() function tell me teh correlation between two sets of numbers
+#?cor is the cor help page
+cor(beren3$value[Feeds], beren3$age[Feeds])
+#cor.test() function will conduct test for type of correlation you pick
+cor.test(beren3$value[Feeds], beren3$age[Feeds])
+berenCor <- cor.test(beren3$value[Feeds], beren3$age[Feeds])
+#summary() will tell me the p-value and other summaries 
+berenCor
+
+#~ the function of 
+berenANOVA <- aov(beren3$value[Feeds] ~ beren3$caregiver[Feeds])
+
+#use boxplot function to plot data
+boxplot(beren3$value[Feeds] ~ beren3$caregiver[Feeds], xlab= "who gave the bottle", ylab = "amount of milk consumed (oz)")
+
+#par() function to edit details about the plot
+#?par is the help page for it
+par(las=1, mar=c(5,5,1,1), mgp=c(2, 0.5, 0), tck=-0.01)
+plot(as.numeric(names(totalFeed)), totalFeed, type="b", pch=16, xlab="age in days", ylab="ounces of milk")
+#To add a horizontal line to indicate the average amount of milk consumed each day
+abline(h=mean(totalFeed), lty=2, col='red')
+#to save the graph as a PDF 
+pdf("r02b-totalMilkByDay.pdf", height = 4, width=4)
+par(las=1, mar=c(5,5,1,1), mgp=c(2, 0.5, 0), tck=-0.01)
+plot(as.numeric(names(totalFeed)), totalFeed, type="b", pch=16, xlab="age in days", ylab="ounces of milk")
+abline(h=mean(totalFeed), lty=2, col='red')
+dev.off()
+#Question 2: the data is random showing no correlation 
