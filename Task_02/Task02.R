@@ -1,4 +1,4 @@
-setwd("C:\\Users\\godfr\\OneDrive\\Desktop\\Evolution\\Tasks\\Task_02")
+setwd("C:\\OneDrive\\Desktop\\Evolution\\Tasks\\Task_02")
 # This reads in the file off the internet
 Data <- read.csv("http://jonsmitchell.com/data/beren.csv", stringsAsFactors=F)
 
@@ -66,7 +66,7 @@ beren2 <- Data
 #also, subset teh object (beren2) by that order
 beren3 <- beren2[order(beren2$age),]
 
-#save teh file as a CSV that so I can read back into R 
+#save the file as a CSV that so I can read back into R 
 write.csv(beren3, "beren_new.csv", quote=F, row.names=FALSE)
 
 
