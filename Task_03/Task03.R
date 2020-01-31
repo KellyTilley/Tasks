@@ -94,5 +94,38 @@ plot(seq(to=MaxMA, from=MinMA, length.out=nrow(nspeciesOverTime)), nspeciesOverT
 lines(seq(to=MaxMA, from=MinMA, length.out=nrow(nspeciesOverTime2)), nspeciesOverTime2[,2], col = Col_mammal, lwd=LineWidth)
 legend("topleft", legend=c(Taxon, Taxon2), col=c(Col_dino, Col_mammal), bty="n", lwd=LineWidth)
 
+#Extension
+MinMA <- 0
+MaxMA <- 541
 
-#EXTRA CREDIT
+# sea stars
+Taxon3 <- "Echinodermata"
+fossils3 <- pbdb_occurrences(base_name = Taxon3, show = c("phylo", "coords", "ident"), min_ma=MinMA, max_ma=MaxMA)
+nspeciesOverTime3 <- pbdb_richness(fossils3, rank = "genus", temporal_extent = c(MaxMA, MinMA), res=Res)
+
+# ducks
+Taxon4 <- "Anseriformes"
+fossils4 <- pbdb_occurrences(base_name = Taxon4, show = c("phylo", "coords", "ident"), min_ma=MinMA, max_ma=MaxMA)
+nspeciesOverTime4 <- pbdb_richness(fossils4, rank = "genus", temporal_extent = c(MaxMA, MinMA), res=Res)
+
+par(mar=c(4,5,2,1), las=1, tck=-0.01, mgp=c(2.5,0.5,0))
+LineWidth <-2 
+plot(seq(to=MaxMA, from=MinMA, length.out=nrow(nspeciesOverTime3)), nspeciesOverTime3[,2], xlim=c(MaxMA, MinMA), type="l", xlab="age (millions of years ago)", ylab="num. of species", col="blue", lwd=LineWidth)
+lines(seq(to=MaxMA, from=MinMA, length.out=nrow(nspeciesOverTime4)), nspeciesOverTime4[,2], col = "red", lwd=LineWidth)
+
+legend("topleft", legend=c(Taxon3, Taxon4), col=c("blue", "red"), bty="n", lwd=LineWidth)
+#I hypohesis that the ducks and the seas stars was not together at the same time 
+#(which I know is wrong but that is my data is showing) 
+#extra credit 
+library(rinat)
+ducks <- get_inat_obs(query = "Mallard Duck")
+head(ducks[,c(4:6)])
+vp_obs <- get_inat_obs(query = "vernal pool")
+head(vp_obs$species_guess)
+bounds <- c(38.44047,-125,40.86652, -121.837)
+duck <- get_inat_obs(query = "Mallard Duck", bounds = bounds)
+m_obs <- get_inat_obs(query="Mallard Duck")
+head(get_inat_obs_user(as.character(m_obs$user_login[1]),maxresults=20))[,1:5]
+m_obs <- get_inat_obs(taxon_name = "Anas platyrhynchos")
+duck_map <- inat_map(m_obs,plot=FALSE)
+duck_map + borders("state") + theme_bw() + xlim(-125, -65) + ylim(25, 50)
