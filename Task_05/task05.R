@@ -248,3 +248,8 @@ function(Popsize=100, nGenerations=100, h=1, s=0, initial_p=0.5, mu = 0, twoway 
   output <- data.frame(freqa=freqa, freqb=freqb, Genotypes=Genotypes[1:length(freqa),])
   return(output)
 }
+
+
+
+
+
